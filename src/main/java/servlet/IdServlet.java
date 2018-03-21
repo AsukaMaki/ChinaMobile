@@ -48,8 +48,7 @@ public class IdServlet extends HttpServlet {
 				response.getWriter().append("<font color='red'>ID已存在</font>");
 				break;
 			}else{
-				response.getWriter().append("<font color='green'>ID可以使用</font>");
-				break;
+				response.getWriter().append("");
 			}
 		}
 		

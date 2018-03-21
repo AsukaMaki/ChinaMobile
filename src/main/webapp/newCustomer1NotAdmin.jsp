@@ -54,12 +54,12 @@
   <TR>
   <TD colSpan=2><IMG height=2 src="images\blank(1).gif" width=1></TD></TR></TBODY></TABLE>
   
-  <%@ include file="subPage.jsp" %>
+  <%@ include file="subPageNotAdmin.jsp" %>
   
-        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
         <TBODY>
         <TR>
-          <TD height=25>&nbsp;您现在的位置：配置业务费用</TD>
+          <TD height=25>&nbsp;您现在的位置：新增客户>第二步</TD>
         </TR>
         <TR>
           <TD bgColor=#2650a6><IMG height=1 src="images\blank(1).gif" 
@@ -68,34 +68,31 @@
           <TD><IMG height=2 src="images\blank(1).gif" width=574></TD></TR></TBODY></TABLE></TD></TR>
   <TR vAlign=top>
     <TD height="600" bgColor=#f1f3f9>
- 
-
-
-<h2>收费细项</h2>
-    <form method="POST" action="charge.do">
-      <p>收费项目：<select size="1" name="chargeCode">
-        <c:forEach items="${charges }" var="c">
-       		<option value="${c.charge_code }">${c.charge_name }</option>
-       	</c:forEach> 
-      </select></p>
-   	  <p>收费金额：<input type="text" name="charges" size="20" value=""></p>
-      <p><input type="submit" value="提交" name="B1"><input type="reset" value="全部重写" name="B2"></p>
-    </form>
-    <hr>
-    <h2>业务收费</h2>
-    <form method="POST" action="chargeRule.do">
-      <p>业务：<select size="1" name="chargeRule">
-        <c:forEach items="${chargeRules }" var="cr">
-       		<option value="${cr[0] }">${cr[1] }业务</option>
-       	</c:forEach>
-      </select></p>
-      <p>收费项目：
-      	<c:forEach items="${charges }" var="c">
-       		<input type="checkbox" name="codes" value="${c.charge_code }">${c.charge_name } 
-      	</c:forEach>
+    <form method="POST" action="newCustomer.do">
+      <p>证件类型：<input type="hidden" name="idType" value="${customer.id_type }" />
+      	<c:choose>
+      		<c:when test="${customer.id_type == 'D'}">居民身份证</c:when>
+      		<c:when test="${customer.id_type == 'A'}">军官证</c:when>
+			<c:otherwise>护照</c:otherwise>     		
+      	</c:choose>
       </p>
-      <p><input type="submit" value="提交" name="B1"><input type="reset" value="全部重写" name="B2"></p>
-    </form>   
+      <p>证件号码：<input type="hidden" name="idNumber" value="${customer.id_number }" />${customer.id_number }</p>
+      <p>姓名：<input type="text" name="customerName" size="20" value="${customer.customer_name }"></p>
+      <p>性别：
+      	<c:choose>
+      		<c:when test="${customer.customer_sex =='M' }">
+      			<input type="radio" value="M" checked name="customerSex">男&nbsp;&nbsp; <input type="radio" name="customerSex" value="F">女
+      		</c:when>
+      		<c:otherwise>
+      			<input type="radio" value="M" name="customerSex">男&nbsp;&nbsp; <input type="radio" name="customerSex" value="F" checked>女
+      		</c:otherwise>
+      	</c:choose>
+      </p>
+      <p>生日：<input type="text" name="customerBirthday" size="20" value="${customer.customer_birthday }"></p>
+      <p>联系地址：<input type="text" name="customerAddress" size="20" value="${customer.customer_address }"></p>
+      <p>　</p>
+      <p><input type="submit" value="下一步>>" name="B1"><input type="reset" value="全部重写" name="B2"></p>
+    </form>
     
     </TD>
     </TR>

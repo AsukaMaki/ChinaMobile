@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -67,13 +68,28 @@
           <TD><IMG height=2 src="images\blank(1).gif" width=574></TD></TR></TBODY></TABLE></TD></TR>
   <TR vAlign=top>
     <TD height="600" bgColor=#f1f3f9>
-    <form method="POST" action="newUser.jsp">
-      <p>证件类型：居民身份证</p>
-      <p>证件号码：3323224123341</p>
-      <p>姓名：<input type="text" name="T1" size="20" value="Tom"></p>
-      <p>性别：<input type="radio" value="V1" checked name="R1">男&nbsp;&nbsp; <input type="radio" name="R1" value="V2">女</p>
-      <p>生日：<input type="text" name="T3" size="20" value="1965/1/1"></p>
-      <p>联系地址：<input type="text" name="T4" size="20" value="akjs askfa asjkfsa"></p>
+    <form method="POST" action="newCustomer.do">
+      <p>证件类型：<input type="hidden" name="idType" value="${customer.id_type }" />
+      	<c:choose>
+      		<c:when test="${customer.id_type == 'D'}">居民身份证</c:when>
+      		<c:when test="${customer.id_type == 'A'}">军官证</c:when>
+			<c:otherwise>护照</c:otherwise>     		
+      	</c:choose>
+      </p>
+      <p>证件号码：<input type="hidden" name="idNumber" value="${customer.id_number }" />${customer.id_number }</p>
+      <p>姓名：<input type="text" name="customerName" size="20" value="${customer.customer_name }"></p>
+      <p>性别：
+      	<c:choose>
+      		<c:when test="${customer.customer_sex =='M' }">
+      			<input type="radio" value="M" checked name="customerSex">男&nbsp;&nbsp; <input type="radio" name="customerSex" value="F">女
+      		</c:when>
+      		<c:otherwise>
+      			<input type="radio" value="M" name="customerSex">男&nbsp;&nbsp; <input type="radio" name="customerSex" value="F" checked>女
+      		</c:otherwise>
+      	</c:choose>
+      </p>
+      <p>生日：<input type="text" name="customerBirthday" size="20" value="${customer.customer_birthday }"></p>
+      <p>联系地址：<input type="text" name="customerAddress" size="20" value="${customer.customer_address }"></p>
       <p>　</p>
       <p><input type="submit" value="下一步>>" name="B1"><input type="reset" value="全部重写" name="B2"></p>
     </form>

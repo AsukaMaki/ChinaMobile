@@ -11,6 +11,20 @@ body {
 -->
 </style>
 <link href="style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script>
+	$(function(){
+		$("#btn_login").click(function(){
+			$.post("login.do",{loginname:$("#userId").val(),passwords:$("#password").val()},function(data){
+				if(data=="0"){
+					alert("用户名或密码错误！");
+				}else{
+					$("#fom_login").submit();
+				}
+			})
+		})
+	})
+</script>
 </HEAD>
 <BODY LEFTMARGIN=0 MARGINWIDTH=0>
 <!-- ImageReady Slices (index.psd) -->
@@ -30,24 +44,24 @@ body {
 			<IMG SRC="images/index_04.gif" WIDTH=444 HEIGHT=363 ALT=""></TD>
 		<TD width="306" height="185" background="images/index_05.gif"><table width="250" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td><form  action="main.jsp" method=post name=login>
+            <td><form  action="admin.do" method=post name=login id="fom_login">
               <div align="center">
                 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td height="30"><div align="center"><strong>用户名：</strong>
-                        <INPUT name=loginname type="text" value="">
+                        <INPUT name=loginname id="userId" type="text" value="">
                         <br>
                     </div></td>
                   </tr>
                   <tr>
                     <td height="30"><div align="center"><strong>密&nbsp;&nbsp;&nbsp;码：</strong>
-                        <INPUT name=passwords type=password value="">
+                        <INPUT name=passwords id="password" type=password value="">
                     </div></td>
                   </tr>
                   <tr>
                     <td height="30">
                       <div align="center">
-                        <INPUT class=f2 type=submit size=4 value=进入系统 name=Submit>
+                        <INPUT class=f2 type="button" id="btn_login" size=4 value=进入系统 name=Submit>
                       </div></td>
                   </tr>
                 </table>

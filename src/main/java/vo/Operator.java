@@ -45,5 +45,11 @@ public class Operator {
 	public void setIs_admin(int is_admin) {
 		this.is_admin = is_admin;
 	}
+
+	@Override
+	public String toString() {
+		return "Operator [operator_id=" + operator_id + ", operator_name=" + operator_name + ", operator_pwd="
+				+ operator_pwd + ", is_admin=" + is_admin + "]";
+	}
 	
 }

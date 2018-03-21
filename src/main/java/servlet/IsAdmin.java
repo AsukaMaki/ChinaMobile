@@ -8,23 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oracle.jdbc.util.ServiceFactory;
-
-import dao.MobileDao;
-import dao.MobileDaoImpl;
-import vo.ChargeRule;
-
 /**
- * Servlet implementation class ChargeRuleServlet
+ * Servlet implementation class IsAdmin
  */
-@WebServlet("/chargeRule.do")
-public class ChargeRuleServlet extends HttpServlet {
+@WebServlet("/admin.do")
+public class IsAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChargeRuleServlet() {
+    public IsAdmin() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,17 +28,13 @@ public class ChargeRuleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+		int isAdmin=(int) request.getSession().getAttribute("isAdmin");
 		
-		String rule=request.getParameter("chargeRule");
-		String[] codes=request.getParameterValues("codes");
-		ChargeRule cr=new ChargeRule(rule,codes);
-		
-		MobileDao md=ServiceFactory.getObject(MobileDaoImpl.class);
-		md.setChargeRule(cr);
-		
-		response.sendRedirect("chargeComplete.jsp");
+		if(isAdmin==1) {
+			response.sendRedirect("main.jsp");
+		}else {
+			response.sendRedirect("mainNotAdmin.jsp");
+		}
 	}
 
 	/**

@@ -8,6 +8,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META content="MSHTML 6.00.2600.0" name=GENERATOR>
 <link href="style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script>
+	$(function(){
+		var count=1;
+		$("#list").load("getNumbers.do")
+		$("#mobileNumber").click(function(){
+			$("#divNumbers").fadeIn();
+		})
+		$("#btn_close").click(function(){
+			$("#divNumbers").fadeOut();
+		})
+		$("#nextPage").click(function(){
+			count++;
+			if(count>10){
+				count=1;
+			}
+			$("#list").load("getNumbers.do",{currentPage:count});
+		})
+		
+	})
+</script>
 </HEAD>
 <BODY bgColor=#ffffff leftMargin=0 topMargin=0 marginheight="0" marginwidth="0">
 <CENTER>
@@ -54,12 +75,12 @@
   <TR>
   <TD colSpan=2><IMG height=2 src="images\blank(1).gif" width=1></TD></TR></TBODY></TABLE>
   
-  <%@ include file="subPage.jsp" %>
+  <%@ include file="subPageNotAdmin.jsp" %>
   
-        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
         <TBODY>
         <TR>
-          <TD height=25>&nbsp;您现在的位置：配置业务费用</TD>
+          <TD height=25>&nbsp;您现在的位置：新增用户</TD>
         </TR>
         <TR>
           <TD bgColor=#2650a6><IMG height=1 src="images\blank(1).gif" 
@@ -68,34 +89,31 @@
           <TD><IMG height=2 src="images\blank(1).gif" width=574></TD></TR></TBODY></TABLE></TD></TR>
   <TR vAlign=top>
     <TD height="600" bgColor=#f1f3f9>
- 
-
-
-<h2>收费细项</h2>
-    <form method="POST" action="charge.do">
-      <p>收费项目：<select size="1" name="chargeCode">
-        <c:forEach items="${charges }" var="c">
-       		<option value="${c.charge_code }">${c.charge_name }</option>
-       	</c:forEach> 
-      </select></p>
-   	  <p>收费金额：<input type="text" name="charges" size="20" value=""></p>
-      <p><input type="submit" value="提交" name="B1"><input type="reset" value="全部重写" name="B2"></p>
+     
+     <form method="POST" action="user.do">
+      <p>手机号码：<input type="text" name="mobileNumber" size="20" id="mobileNumber"></p>
+      <div id="divNumbers" style="position:absolute; left:350px; top:150px; background-color:gainsboro; width:400px; height:250px; display:none;">
+    	<div style="float: right">
+			<input type="button" id="btn_close" value="关闭" />
+		</div>
+		<div style="clear: both" id="list">
+			<!-- <table id="tbNumbers" width="100%">
+			</table> -->
+			<%@ include file="list.jsp" %>
+		</div>
+		<div style="position:absolute; left:350px; top:220px;">
+			<a href="#" id="nextPage">换一批</a>
+		</div>
+     </div>
+      <p>漫游状态：<input type="radio" name="status" value="P">省内漫游 <input type="radio" name="status" value="D">国内漫游 
+      <input type="radio" name="status" value="I">国际漫游</p>
+      <p>通话级别：<input type="radio" value="L" name="level">本地通话 
+      <input type="radio" name="level" value="D">国内长途 <input type="radio" name="level" value="I">国际长途</p>
+      <p>客户ID：<input type="text" name="userId" size="20" value="${userId }" readonly></p>
+      
+      <p><input type="submit" value="完成>>" name="B1"><input type="reset" value="全部重写" name="B2"></p>
     </form>
-    <hr>
-    <h2>业务收费</h2>
-    <form method="POST" action="chargeRule.do">
-      <p>业务：<select size="1" name="chargeRule">
-        <c:forEach items="${chargeRules }" var="cr">
-       		<option value="${cr[0] }">${cr[1] }业务</option>
-       	</c:forEach>
-      </select></p>
-      <p>收费项目：
-      	<c:forEach items="${charges }" var="c">
-       		<input type="checkbox" name="codes" value="${c.charge_code }">${c.charge_name } 
-      	</c:forEach>
-      </p>
-      <p><input type="submit" value="提交" name="B1"><input type="reset" value="全部重写" name="B2"></p>
-    </form>   
+
     
     </TD>
     </TR>

@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,19 +13,19 @@ import com.oracle.jdbc.util.ServiceFactory;
 
 import dao.MobileDao;
 import dao.MobileDaoImpl;
-import vo.ChargeRule;
+import vo.Charge;
 
 /**
- * Servlet implementation class ChargeRuleServlet
+ * Servlet implementation class GetCharges
  */
-@WebServlet("/chargeRule.do")
-public class ChargeRuleServlet extends HttpServlet {
+@WebServlet("/getCharges.do")
+public class GetCharges extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChargeRuleServlet() {
+    public GetCharges() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,16 +36,15 @@ public class ChargeRuleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		String rule=request.getParameter("chargeRule");
-		String[] codes=request.getParameterValues("codes");
-		ChargeRule cr=new ChargeRule(rule,codes);
 		
 		MobileDao md=ServiceFactory.getObject(MobileDaoImpl.class);
-		md.setChargeRule(cr);
+		List<Charge> lc=md.getAllCharges();
+		List<Object[]> lcr=md.getAllChargeRules();
 		
-		response.sendRedirect("chargeComplete.jsp");
+		request.setAttribute("charges", lc);
+		request.setAttribute("chargeRules", lcr);
+		
+		request.getRequestDispatcher("charge.jsp").forward(request, response);
 	}
 
 	/**

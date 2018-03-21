@@ -1,30 +1,30 @@
 package servlet;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oracle.jdbc.util.ServiceFactory;
 
 import dao.MobileDao;
 import dao.MobileDaoImpl;
-import vo.ChargeRule;
+import vo.Operator;
 
 /**
- * Servlet implementation class ChargeRuleServlet
+ * Servlet implementation class Login
  */
-@WebServlet("/chargeRule.do")
-public class ChargeRuleServlet extends HttpServlet {
+@WebServlet("/login.do")
+public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChargeRuleServlet() {
+    public Login() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,17 +34,18 @@ public class ChargeRuleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		String rule=request.getParameter("chargeRule");
-		String[] codes=request.getParameterValues("codes");
-		ChargeRule cr=new ChargeRule(rule,codes);
+		String userId=request.getParameter("loginname");
+		String password=request.getParameter("passwords");
+		HttpSession session=request.getSession();
 		
 		MobileDao md=ServiceFactory.getObject(MobileDaoImpl.class);
-		md.setChargeRule(cr);
-		
-		response.sendRedirect("chargeComplete.jsp");
+		Operator o=md.login(userId, password);
+		if(o==null) {
+			response.getWriter().append("0");
+		}else {
+			session.setAttribute("user", o);
+			session.setAttribute("isAdmin", o.getIs_admin());
+		}
 	}
 
 	/**

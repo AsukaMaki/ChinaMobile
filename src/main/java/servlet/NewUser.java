@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,19 +11,19 @@ import com.oracle.jdbc.util.ServiceFactory;
 
 import dao.MobileDao;
 import dao.MobileDaoImpl;
-import vo.ChargeRule;
+import vo.User;
 
 /**
- * Servlet implementation class ChargeRuleServlet
+ * Servlet implementation class NewUser
  */
-@WebServlet("/chargeRule.do")
-public class ChargeRuleServlet extends HttpServlet {
+@WebServlet("/user.do")
+public class NewUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChargeRuleServlet() {
+    public NewUser() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,17 +33,22 @@ public class ChargeRuleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		String rule=request.getParameter("chargeRule");
-		String[] codes=request.getParameterValues("codes");
-		ChargeRule cr=new ChargeRule(rule,codes);
+		String mobile_number=request.getParameter("mobileNumber");
+		String status=request.getParameter("status");
+		String level=request.getParameter("level");
+		int id=Integer.parseInt(request.getParameter("userId"));
+		User u=new User(0,mobile_number,status,level,id,"Y");
 		
 		MobileDao md=ServiceFactory.getObject(MobileDaoImpl.class);
-		md.setChargeRule(cr);
+		md.newUser(u);
+		md.alterMobile(mobile_number);
 		
-		response.sendRedirect("chargeComplete.jsp");
+		int isAdmin=(int) request.getSession().getAttribute("isAdmin");
+		if(isAdmin==1) {
+			response.sendRedirect("saveInfo.jsp");
+		}else {
+			response.sendRedirect("saveInfoNotAdmin.jsp");
+		}
 	}
 
 	/**
